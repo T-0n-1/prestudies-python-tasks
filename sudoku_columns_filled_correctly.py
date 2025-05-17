@@ -1,9 +1,9 @@
 def column_right(matrix: list, column: int) -> bool:
     """
-    This function checks if a specific row in a 2D matrix, sudoku, is filled correctly.
+    This function checks if a specific column in a 2D matrix, sudoku, is filled correctly.
 
     :param matrix: A 2D list (list of lists) representing the matrix.
-    :param row: The index of the row to check for uniqueness.
+    :param column: The index of the column to check for uniqueness.
     :return: True if all elements in the specified row are unique, False otherwise.
     """
     column_to_check = []
