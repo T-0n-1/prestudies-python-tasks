@@ -118,11 +118,11 @@ def user_prompt() -> list[tuple[int, int]]:
         user_input: str = input("Koepisteet ja harjoitusten määrä: ")
         if user_input:
             try:
-                exam_points, exercises = user_input.split()
-                exam_points = int(exam_points)
+                exam_points_str, exercises_str = user_input.split()
+                exam_points = int(exam_points_str)
+                exercises = int(exercises_str)
                 if not (0 <= exam_points <= 20):
                     raise ValueError("Koepisteet eivät ole välillä 0-20.")
-                exercises = int(exercises)
                 if not (0 <= exercises <= 100):
                     raise ValueError("Harjoitusten määrä ei ole välillä 0-100.")
                 point_list.append((exam_points, exercises))
