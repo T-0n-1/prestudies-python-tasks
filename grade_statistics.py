@@ -1,5 +1,41 @@
+def print_statistics(mean: float, passing_rate:float, grades: dict) -> None:
+    """
+    Print the statistics of the grades.
+    """
+    print("Tilasto:")
+    print(f"Pisteiden keskiarvo: {mean:.1f}")
+    print(f"Hyväksymisprosentti: {passing_rate:.1%}")
+    print("Arvosanajakauma:")
+    for grade, count in grades.items():
+        print(f"  {grade}: {'*' * count}")
 
 
+def turn_total_points_into_grades(total_points: int) -> int:
+    if 15 <= total_points <= 17:
+        return 1
+    elif 18 <= total_points <= 20:
+        return 2
+    elif 21 <= total_points <= 23:
+        return 3
+    elif 24 <= total_points <= 27:
+        return 4
+    elif 28 <= total_points <= 30:
+        return 5
+    else:
+        return 0
+
+def calculate_grade(total_points_list: list) -> dict:
+    """
+    Calculate the grade from the list of total points.
+    Each student is represented by a tuple of total points and a boolean indicating if they passed.
+    """
+    grades: dict = {"5": 0, "4": 0, "3": 0, "2": 0, "1": 0, "0": 0}
+    for student in total_points_list:
+        if student[1] == True:
+            grades["0"] += 1
+        elif student[1] == False:
+            grades[str(turn_total_points_into_grades(student[0]))] += 1
+    return grades
 
 
 def calculate_passing_rate(total_point_list: list) -> float:
@@ -23,23 +59,6 @@ def calculate_mean_of_total_points(total_point_list: list) -> float:
         sum_of_points += student[0]
     mean = sum_of_points / len(total_point_list)
     return mean
-        
-
-def calculate_overall_points(point_list: list) -> list[list[int|bool]]:
-    """
-    Calculate the overall points from the list of tuples.
-    Each tuple contains exam points and exercise points.
-    """
-    total_points_list = []
-    for exam_points, exercises in point_list:
-        total_points = exam_points + turn_exercises_into_points(exercises)
-        fail = False
-        if exam_points < 10:
-            fail = True
-        if total_points <= 14:
-            fail = True 
-        total_points_list.append([total_points, fail])
-    return total_points_list
 
 
 def turn_exercises_into_points(exercises: int) -> int:
@@ -67,17 +86,36 @@ def turn_exercises_into_points(exercises: int) -> int:
     elif 90 <= exercises < 100:
         return 9
     elif exercises == 100:
-        return 10    
+        return 10
+    else:
+        return 0    
+        
+
+def calculate_overall_points(point_list: list) -> list[list[int|bool]]:
+    """
+    Calculate the overall points from the list of tuples.
+    Each tuple contains exam points and exercise points.
+    """
+    total_points_list = []
+    for exam_points, exercises in point_list:
+        total_points = exam_points + turn_exercises_into_points(exercises)
+        fail = False
+        if exam_points < 10:
+            fail = True
+        if total_points <= 14:
+            fail = True 
+        total_points_list.append([total_points, fail])
+    return total_points_list
 
 
-def user_prompt() -> None:
+def user_prompt() -> list[tuple[int, int]]:
     """
     Prompt the user for a two numbers separated by space.
     These numbers represent the exam and exercise points. 
     """
     point_list = []
     while True:
-        user_input = input("Koepisteet ja harjoitusten määrä: ")
+        user_input: str = input("Koepisteet ja harjoitusten määrä: ")
         if user_input:
             try:
                 exam_points, exercises = user_input.split()
@@ -87,13 +125,26 @@ def user_prompt() -> None:
                 exercises = int(exercises)
                 if not (0 <= exercises <= 100):
                     raise ValueError("Harjoitusten määrä ei ole välillä 0-100.")
-                point_list.append(tuple(exam_points, exercises))
+                point_list.append((exam_points, exercises))
             except ValueError:
                 print("Virheellinen syöte. Yritä uudelleen.")
                 continue
         else:
             break
     return point_list
+
+def main() -> None:
+    """
+    Main function to execute the program.
+    """
+    point_list = user_prompt()
+    total_points_list = calculate_overall_points(point_list)
+    mean_of_total_points = calculate_mean_of_total_points(total_points_list)
+    passing_rate = calculate_passing_rate(total_points_list)
+    grades = calculate_grade(total_points_list)
+    print_statistics(mean_of_total_points, passing_rate, grades)
+
+
+if __name__ == "__main__":
+    main()
     
-
-
