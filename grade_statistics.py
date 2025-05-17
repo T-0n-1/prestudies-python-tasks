@@ -1,8 +1,45 @@
-def recalculate_points(point_list: list) -> list:
+
+
+
+
+def calculate_passing_rate(total_point_list: list) -> float:
     """
-    Build new points list after defining the exercises into points.
+    Calculate the passing rate from the list.
     """
-    return [exam_points, exercises = turn_exercises_into_points(exercises) for exam_points, exercises in point_list]
+    passing_students = 0
+    for student in total_point_list:
+        if student[1] == False:
+            passing_students += 1
+    passing_rate = passing_students / len(total_point_list)
+    return passing_rate
+
+
+def calculate_mean_of_total_points(total_point_list: list) -> float:
+    """
+    Calculate the mean of the total points.
+    """
+    sum_of_points = 0
+    for student in total_point_list:
+        sum_of_points += student[0]
+    mean = sum_of_points / len(total_point_list)
+    return mean
+        
+
+def calculate_overall_points(point_list: list) -> list[list[int|bool]]:
+    """
+    Calculate the overall points from the list of tuples.
+    Each tuple contains exam points and exercise points.
+    """
+    total_points_list = []
+    for exam_points, exercises in point_list:
+        total_points = exam_points + turn_exercises_into_points(exercises)
+        fail = False
+        if exam_points < 10:
+            fail = True
+        if total_points <= 14:
+            fail = True 
+        total_points_list.append([total_points, fail])
+    return total_points_list
 
 
 def turn_exercises_into_points(exercises: int) -> int:
