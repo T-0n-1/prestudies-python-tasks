@@ -8,7 +8,7 @@ def highest_count(dictionary: dict) -> str:
     Returns:
         str: The character with the highest count.
     """
-    return max(dictionary, key=dictionary.get)
+    return max(dictionary, key=lambda k: dictionary[k])
 
 
 def count_chars(string: str) -> dict:
