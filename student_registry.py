@@ -22,7 +22,7 @@ def add_course(students: dict, student: str, new_course: tuple[str, int]) -> Non
     
     :param students: List of students
     :param student: Student to whom the course is added
-    :param course: Course to be added
+    :param new_course: Course to be added
     :param grade: Grade for the course
     """
     if student in students:
