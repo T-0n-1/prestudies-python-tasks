@@ -24,6 +24,7 @@ def turn_total_points_into_grades(total_points: int) -> int:
     else:
         return 0
 
+
 def calculate_grade(total_points_list: list) -> dict:
     """
     Calculate the grade from the list of total points.
