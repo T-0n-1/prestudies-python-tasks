@@ -16,10 +16,8 @@ class PhoneBook:
     
     def __str__(self):
         information = "LUETTELO: "
-        for person, numbers in self.phonebook.items():
-            information += f"\nNimi: {person}"
-            for number in numbers.phone_number:
-                information += f"\n{number}"
+        for person in self.phonebook:
+            information += f"\n{person}"
         return information
     
     def prompt_name(self) -> str:
