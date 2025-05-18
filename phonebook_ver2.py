@@ -51,6 +51,8 @@ def user_command() -> None:
         elif user_input == "3":
             print("Lopetetaan...")
             break
+        else:
+            continue
 
 
 def main() -> None:
