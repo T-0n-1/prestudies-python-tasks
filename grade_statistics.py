@@ -11,6 +11,13 @@ def print_statistics(mean: float, passing_rate:float, grades: dict) -> None:
 
 
 def turn_total_points_into_grades(total_points: int) -> int:
+    """
+    Convert the total points into grades.
+
+    :param total_points: The total points of the student.
+    :return: The grade of the student.
+    """
+
     if 15 <= total_points <= 17:
         return 1
     elif 18 <= total_points <= 20:
