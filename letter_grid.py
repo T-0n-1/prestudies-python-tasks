@@ -13,7 +13,6 @@ def build_letter_grid(level_given: int) -> list:
     grid = []
     for level in range(level_given):
         letter = alphabets[level]
-
         if level == 0:
             grid.append([letter])
         else:
