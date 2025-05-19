@@ -14,10 +14,17 @@ def sum_of_all_elements(matrix):
     """
     This function takes a matrix as input and returns the sum of all its elements.
     """
-    total_sum = 0
+    return sum(row_sum(matrix))
+
+
+def row_sum(matrix) -> list:
+    """
+    This function takes a matrix as input and returns a list of sums of each row.
+    """
+    row_sums = []
     for row in matrix:
-        total_sum += sum(row)
-    return total_sum
+        row_sums.append(sum(row))
+    return row_sums
 
 
 def read_matrix_from_file(file_path):
@@ -38,8 +45,10 @@ def read_matrix_from_file(file_path):
 
 def main():
     matrix = read_matrix_from_file('matriisi.txt')
+    row_sums = row_sum(matrix)
     sum = sum_of_all_elements(matrix)
     max_value = highest_value(matrix)
+    print(f"The sum of each row is: {row_sums}")
     print(f"The sum of all elements in the matrix is: {sum}")
     print(f"The highest value in the matrix is: {max_value}")
 
