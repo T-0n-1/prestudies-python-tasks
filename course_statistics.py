@@ -106,7 +106,6 @@ def save_stats(student_data: dict, course_data: dict) -> None:
     open_student_data(student_data, {})
         
         
-
 def combine_data(students: dict, tasks: dict, exams: dict) -> dict:
     """
     Combine student and task data and print the results.
