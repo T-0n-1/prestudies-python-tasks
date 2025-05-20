@@ -109,9 +109,7 @@ def main() -> None:
     Main function to execute the program.
     """
     student_file, task_file, exam_file = user_prompt()
-    students = read_file(student_file)
-    tasks = read_file(task_file)
-    exams = read_file(exam_file)
+    students, tasks, exams = [read_file(argument) for argument in [student_file, task_file, exam_file]]
     student_statistics = combine_data(students, tasks, exams)
     print_stats(student_statistics)
 
