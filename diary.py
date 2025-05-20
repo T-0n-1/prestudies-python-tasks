@@ -41,7 +41,7 @@ def user_interface(path: Path) -> None:
             print("Heippa!\n")
             break
         else:
-            print("Virheellinen valinta, yritä uudelleen.")
+            print("Virheellinen valinta, yritä uudelleen.\n")
             continue
 
 
