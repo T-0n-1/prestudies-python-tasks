@@ -47,6 +47,39 @@ def task_sum_to_points(task_sum: int) -> int:
         return 0
 
 
+def open_student_data(given_data: dict, id_data: dict) -> None:
+    """
+    Open student data and save output to two separate files.
+
+    : param given_data: Dictionary containing student data.
+    : param id_data: Dictionary containing student IDs.
+    """
+    for student, grades in given_data.items():
+            task_sum = grades[0]
+            exam_sum = grades[1]
+            task_points = task_sum_to_points(task_sum)
+            total_points = task_points + exam_sum
+            grade = convert_total_points_to_grade(total_points)
+            if id_data:
+                hetu = id_data[student]
+                with open("tulos.csv", "a") as summary_file:
+                    print(f"{hetu};{student};{grade}", file=summary_file)
+            else:
+                with open("tulos.txt", "a") as results_file:
+                    print(f"{student:30}{task_sum:<10}{task_points:<10}{exam_sum:<10}{total_points:<10}{grade:<10}", file=results_file)
+
+
+def build_header(course_data: dict) -> str:
+    """
+    Build the header for the output file.
+    """
+    title = f"{course_data['nimi'][0]}, {course_data['laajuus opintopisteina'][0]} opintopistettä"
+    title_line = "=" * len(title)
+    topics = (f"{'nimi':30}{'teht_lkm':10}{'teht_pist':10}{'koe_pist':10}{'yht_pist':10}{'arvosana':10}")
+    header = title + "\n" + title_line + "\n" + topics
+    return header
+
+
 def save_results(student_data: dict, student_file: str) -> None:
     """
     Save the summary of student results to a file.
@@ -60,34 +93,18 @@ def save_results(student_data: dict, student_file: str) -> None:
             id, first_name, last_name = line.split(";")
             name = first_name + " " + last_name
             rearranged_data[name] = id
-    with open("tulos.csv", "a") as summary_file:
-        for student, grades in student_data.items():
-            task_sum = grades[0]
-            exam_sum = grades[1]
-            task_points = task_sum_to_points(task_sum)
-            total_points = task_points + exam_sum
-            grade = convert_total_points_to_grade(total_points)
-            hetu = rearranged_data[student]
-            print(f"{hetu};{student};{grade}", file=summary_file)
+    open_student_data(student_data, rearranged_data)
 
     
 def save_stats(student_data: dict, course_data: dict) -> None:
     """
     Save the statistics of students, tasks, and exams.
     """
-    title = f"{course_data['nimi'][0]}, {course_data['laajuus opintopisteina'][0]} opintopistettä"
-    title_line = "=" * len(title)
-    with open("tulos.txt", "a") as results_file:
-        print(title, file=results_file)
-        print(title_line, file=results_file)
-        print(f"{'nimi':30}{'teht_lkm':10}{'teht_pist':10}{'koe_pist':10}{'yht_pisteet':10}{'arvosana':10}", file=results_file)
-        for student, grades in student_data.items():
-            task_sum = grades[0]
-            exam_sum = grades[1]
-            task_points = task_sum_to_points(task_sum)
-            total_points = task_points + exam_sum
-            grade = convert_total_points_to_grade(total_points)
-            print(f"{student:30}{task_sum:<10}{task_points:<10}{exam_sum:<10}{total_points:<10}{grade:<10}", file=results_file)
+    header = build_header(course_data)
+    with open("tulos.txt", "w") as results_file:
+        print(header, file=results_file)
+    open_student_data(student_data, {})
+        
         
 
 def combine_data(students: dict, tasks: dict, exams: dict) -> dict:
