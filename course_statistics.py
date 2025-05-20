@@ -45,20 +45,49 @@ def task_sum_to_points(task_sum: int) -> int:
         return 10
     else:
         return 0
-    
 
-def print_stats(data: dict) -> None:
+
+def save_results(student_data: dict, student_file: str) -> None:
     """
-    Print the statistics of students, tasks, and exams.
+    Save the summary of student results to a file.
     """
-    print(f"{'nimi':30}{'teht_lkm':10}{'teht_pist':10}{'koe_pist':10}{'yht_pisteet':10}{'arvosana':10}")
-    for student, grades in data.items():
-        task_sum = grades[0]
-        exam_sum = grades[1]
-        task_points = task_sum_to_points(task_sum)
-        total_points = task_points + exam_sum
-        grade = convert_total_points_to_grade(total_points)
-        print(f"{student:30}{task_sum:<10}{task_points:<10}{exam_sum:<10}{total_points:<10}{grade:<10}")
+    rearranged_data = {}
+    with open(student_file, "r") as file:
+        for line in file:
+            line = line.strip()
+            if "opnro" in line:
+                continue
+            id, first_name, last_name = line.split(";")
+            name = first_name + " " + last_name
+            rearranged_data[name] = id
+    with open("tulos.csv", "a") as summary_file:
+        for student, grades in student_data.items():
+            task_sum = grades[0]
+            exam_sum = grades[1]
+            task_points = task_sum_to_points(task_sum)
+            total_points = task_points + exam_sum
+            grade = convert_total_points_to_grade(total_points)
+            hetu = rearranged_data[student]
+            print(f"{hetu};{student};{grade}", file=summary_file)
+
+    
+def save_stats(student_data: dict, course_data: dict) -> None:
+    """
+    Save the statistics of students, tasks, and exams.
+    """
+    title = f"{course_data['nimi'][0]}, {course_data['laajuus opintopisteina'][0]} opintopistettä"
+    title_line = "=" * len(title)
+    with open("tulos.txt", "a") as results_file:
+        print(title, file=results_file)
+        print(title_line, file=results_file)
+        print(f"{'nimi':30}{'teht_lkm':10}{'teht_pist':10}{'koe_pist':10}{'yht_pisteet':10}{'arvosana':10}", file=results_file)
+        for student, grades in student_data.items():
+            task_sum = grades[0]
+            exam_sum = grades[1]
+            task_points = task_sum_to_points(task_sum)
+            total_points = task_points + exam_sum
+            grade = convert_total_points_to_grade(total_points)
+            print(f"{student:30}{task_sum:<10}{task_points:<10}{exam_sum:<10}{total_points:<10}{grade:<10}", file=results_file)
         
 
 def combine_data(students: dict, tasks: dict, exams: dict) -> dict:
@@ -86,11 +115,17 @@ def read_file(file_path: str) -> dict:
     with open(file_path, "r") as file:
         for line in file:
             line = line.strip()
-            opnro, *rest = line.split(";")
-            if opnro == "opnro":
-                continue
-            data[opnro] = rest
-    return data 
+            if ";" in line:
+                opnro, *rest = line.split(";")
+                if opnro == "opnro":
+                    continue
+                data[opnro] = rest
+            else:
+                key, value = line.split(":")
+                key = key.strip()
+                value = value.strip()
+                data[key] = [value]
+        return data 
 
 
 def user_prompt() -> tuple:
@@ -100,18 +135,20 @@ def user_prompt() -> tuple:
     # student_information = input("Opiskelijatiedot: ")
     # task_information = input("Tehtävätiedot: ")
     # exam_information = input("Koepisteet: ")
-    # return student_information, task_information, exam_information
-    return "opiskelijat.csv", "tehtavat.csv", "koepisteet.csv"
+    # course_information = input("Kurssin tiedot: ")
+    # return student_information, task_information, exam_information, course_information
+    return "opiskelijat.csv", "tehtavat.csv", "koepisteet.csv", "kurssi.csv"
 
 
 def main() -> None:
     """
     Main function to execute the program.
     """
-    student_file, task_file, exam_file = user_prompt()
-    students, tasks, exams = [read_file(argument) for argument in [student_file, task_file, exam_file]]
+    student_file, task_file, exam_file, course_file = user_prompt()
+    students, tasks, exams, course = [read_file(argument) for argument in [student_file, task_file, exam_file, course_file]]
     student_statistics = combine_data(students, tasks, exams)
-    print_stats(student_statistics)
+    save_stats(student_statistics, course)
+    save_results(student_statistics, student_file)
 
 
 if __name__ == "__main__":
