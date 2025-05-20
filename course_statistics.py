@@ -51,13 +51,14 @@ def print_stats(data: dict) -> None:
     """
     Print the statistics of students, tasks, and exams.
     """
+    print(f"{'nimi':30}{'teht_lkm':10}{'teht_pist':10}{'koe_pist':10}{'yht_pisteet':10}{'arvosana':10}")
     for student, grades in data.items():
         task_sum = grades[0]
         exam_sum = grades[1]
         task_points = task_sum_to_points(task_sum)
         total_points = task_points + exam_sum
         grade = convert_total_points_to_grade(total_points)
-        print(f"{student} {grade}")
+        print(f"{student:30}{task_sum:<10}{task_points:<10}{exam_sum:<10}{total_points:<10}{grade:<10}")
         
 
 def combine_data(students: dict, tasks: dict, exams: dict) -> dict:
