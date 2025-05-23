@@ -11,7 +11,7 @@ def generate_lottery_numbers(how_many_numbers: int, min_number: int, max_number:
     """
     from random import randint
 
-    numbers = []
+    numbers: list = []
     while len(numbers) < how_many_numbers:
         number = randint(min_number, max_number)
         numbers.append(number)
