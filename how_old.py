@@ -12,7 +12,7 @@ def calculate_the_difference(birthday: datetime) -> timedelta:
     return last_day_of_millenium - birthday
 
 
-def prompt_for_birthday() -> tuple[int, int, int]:
+def prompt_for_birthday() -> tuple[str, str, str]:
     """
     Prompt the user for their birthday and return it as a tuple of (year, month, day).
     """
