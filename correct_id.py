@@ -35,7 +35,7 @@ def valitade_date(date: str) -> datetime | None:
         return None
     
 
-def valitade_id(id: str) -> datetime | None |bool:
+def valitade_id(id: str) -> datetime | None | bool:
     """
     Validates if the given ID is valid.
     
