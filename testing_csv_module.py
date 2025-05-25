@@ -43,7 +43,7 @@ def prompt_for_age(list_of_names: list[str]) -> dict[str, int]:
 
 def prompt_for_children_names() -> list[str]:
     """
-    Prompt the user to enter names of children, separated by commas.
+    Prompt the user to enter names of children.
     Returns a list of names.
     """
     names_list = []
