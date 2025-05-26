@@ -4,27 +4,24 @@ from urllib.request import urlopen
 from http.client import HTTPResponse
 
 
-def get_unique_course_stats(name: str) -> dict:
-    """Get a unique course by its name.
-    :param name: The name of the course to search for.
-    :return: A dictionary containing the course details if found, otherwise an empty dictionary.
+def build_unique_course_stats(course_stats_list: list) -> dict:
+    """Build a dictionary of unique course statistics from a list of course stats.
+    :param course_stats_list: A list of dictionaries containing course statistics.
+    :return: A dictionary with course statistics. 
     """
     dictionary = {}
-    url = f"https://studies.cs.helsinki.fi/stats-mock/api/courses/{name}/stats"
-    course_stats_decoded = decode_response(urlopen(url))
-    course_stats_json = convert_into_json(course_stats_decoded)
-    weeks_total = len(course_stats_json)
+    weeks_total = len(course_stats_list)
     students_list = []
     total_hours_list = []
     total_exercises_list = []
-    for week in course_stats_json:
-        for key in course_stats_json[week]:
+    for week in course_stats_list:
+        for key in course_stats_list[week]:
             if key == "students":
-                students_list.append(course_stats_json[week][key])
+                students_list.append(course_stats_list[week][key])
             elif key == "hour_total":
-                total_hours_list.append(course_stats_json[week][key])
+                total_hours_list.append(course_stats_list[week][key])
             elif key == "exercise_total":
-                total_exercises_list.append(course_stats_json[week][key])            
+                total_exercises_list.append(course_stats_list[week][key])            
     max_of_students = max(students_list) if students_list else 0
     total_of_hours_total = sum(total_hours_list) if total_hours_list else 0
     average_of_hours = floor(total_of_hours_total / max_of_students) if max_of_students > 0 else 0
@@ -38,6 +35,16 @@ def get_unique_course_stats(name: str) -> dict:
     dictionary["tehtavia_keskimaarin"] = average_of_exercises
     return dictionary
 
+
+def get_unique_course_stats(name: str) -> dict:
+    """Get a unique course by its name.
+    :param name: The name of the course to search for.
+    :return: A dictionary containing the course details if found, otherwise an empty dictionary.
+    """
+    url = f"https://studies.cs.helsinki.fi/stats-mock/api/courses/{name}/stats"
+    course_stats_decoded = decode_response(urlopen(url))
+    return build_unique_course_stats(convert_into_json(course_stats_decoded))
+    
 
 def get_all_enabled_courses(courses: list) -> list[tuple]:
     """Get all enabled courses from the provided list of courses.
