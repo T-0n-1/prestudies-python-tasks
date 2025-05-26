@@ -75,33 +75,29 @@ check your solution before submitting it.
 
 Below are templates for the functions you need to implement.
 """
-lowerbets = 'abcdefghijklmnopqrstuvwxyz'
-upperbets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+lower = 'abcdefghijklmnopqrstuvwxyz'
+upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 def encrypt(text: str, shift: int) -> str:
     encrypted_text: str = ''
     for char in text:
-        if char in lowerbets:
-            index: int = (lowerbets.index(char) + shift) % len(lowerbets)
-            encrypted_text += lowerbets[index]
-        elif char in upperbets:
-            index = (upperbets.index(char) + shift) % len(upperbets)
-            encrypted_text += upperbets[index]
-        else:
+        alphabet = lower if char.islower() else upper if char.isupper() else None
+        if alphabet == None:
             encrypted_text += char
+        else:    
+            index: int = (alphabet.index(char) + shift) % len(alphabet)
+            encrypted_text += alphabet[index]
     return encrypted_text
 
 
 def decrypt(text: str, shift: int) -> str:
     decrypted_text: str = ''
     for char in text:
-        if char in lowerbets:
-            index: int = (lowerbets.index(char) - shift) % len(lowerbets)
-            decrypted_text += lowerbets[index]
-        elif char in upperbets:
-            index = (upperbets.index(char) - shift) % len(upperbets)
-            decrypted_text += upperbets[index]
-        else:
+        alphabet = lower if char.islower() else upper if char.isupper() else None
+        if alphabet == None:
             decrypted_text += char
+        else:    
+            index: int = (alphabet.index(char) - shift) % len(alphabet)
+            decrypted_text += alphabet[index]
     return decrypted_text
