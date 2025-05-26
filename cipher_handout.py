@@ -86,7 +86,7 @@ def encrypt(text: str, shift: int) -> str:
             index: int = (lowerbets.index(char) + shift) % len(lowerbets)
             encrypted_text += lowerbets[index]
         elif char in upperbets:
-            index: int = (upperbets.index(char) + shift) % len(upperbets)
+            index = (upperbets.index(char) + shift) % len(upperbets)
             encrypted_text += upperbets[index]
         else:
             encrypted_text += char
@@ -100,7 +100,7 @@ def decrypt(text: str, shift: int) -> str:
             index: int = (lowerbets.index(char) - shift) % len(lowerbets)
             decrypted_text += lowerbets[index]
         elif char in upperbets:
-            index: int = (upperbets.index(char) - shift) % len(upperbets)
+            index = (upperbets.index(char) - shift) % len(upperbets)
             decrypted_text += upperbets[index]
         else:
             decrypted_text += char
